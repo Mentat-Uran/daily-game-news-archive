@@ -1,0 +1,28 @@
+name: Validate Archive Index
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  archive-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run validator tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate the archive index
+        run: python scripts/validate_archive_index.py
